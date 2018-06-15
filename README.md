@@ -65,23 +65,28 @@ adder := ga.NewLongAdder(ga.MutexAdderType)
 
 # Benchmark
 
-* Hardware: MacBookPro14,3
+* Hardware: MacBookPro14,3 (2.8 GHz Intel Core i7, 16 GB 2133 MHz LPDDR3)
+* OS: Mac OS 10.13.5
 
 ```
 Number of routine: 200
-Number of increment each routine: 1000000
+Number of inc operation each routine: 1,000,000
+Total ops: 200 * 1,000,000 = 200,000,000
 ```
 ```
-BenchmarkMutexAdderSingleRoutine-8              2000000000               0.09 ns/op
-BenchmarkAtomicAdderSingleRoutine-8             2000000000               0.04 ns/op
-BenchmarkRandomCellAdderSingleRoutine-8         1000000000               0.27 ns/op
-BenchmarkJDKAdderSingleRoutine-8                2000000000               0.05 ns/op
-BenchmarkMutexAdderMultiRoutine-8                      1        20125355749 ns/op
-BenchmarkAtomicAdderMultiRoutine-8                     1        4456265607 ns/op
-BenchmarkRandomCellAdderMultiRoutine-8                 1        1824514151 ns/op
-BenchmarkJDKAdderMultiRoutine-8                        1        2235518096 ns/op
-BenchmarkMutexAdderMultiRoutineMix-8                   1        19153137432 ns/op
-BenchmarkAtomicAdderMultiRoutineMix-8                  1        4516106413 ns/op
-BenchmarkRandomCellAdderMultiRoutineMix-8              1        2170390082 ns/op
-BenchmarkJDKAdderMultiRoutineMix-8                     1        3146307410 ns/op
+goos: darwin
+goarch: amd64
+pkg: github.com/linxGnu/go-adder
+BenchmarkMutexAdderSingleRoutine-8          	2000000000	         0.08 ns/op
+BenchmarkAtomicAdderSingleRoutine-8         	2000000000	         0.03 ns/op
+BenchmarkRandomCellAdderSingleRoutine-8     	2000000000	         0.11 ns/op
+BenchmarkJDKAdderSingleRoutine-8            	1000000000	         0.09 ns/op
+BenchmarkMutexAdderMultiRoutine-8           	       1	19808546646 ns/op
+BenchmarkAtomicAdderMultiRoutine-8          	       1	4458109266 ns/op
+BenchmarkRandomCellAdderMultiRoutine-8      	       1	1809959924 ns/op
+BenchmarkJDKAdderMultiRoutine-8             	       1	2027221743 ns/op
+BenchmarkMutexAdderMultiRoutineMix-8        	       1	19768485419 ns/op
+BenchmarkAtomicAdderMultiRoutineMix-8       	       1	4519988648 ns/op
+BenchmarkRandomCellAdderMultiRoutineMix-8   	       1	2131248316 ns/op
+BenchmarkJDKAdderMultiRoutineMix-8          	       1	3006811661 ns/op
 ```

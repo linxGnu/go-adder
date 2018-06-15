@@ -164,16 +164,21 @@ func (s *Striped64) accumulate(probe int, x int64, fn LongBinaryOperator, wasUnc
 	var v, newV int64
 	var as []*cell
 	var a *cell
-	var n int
+	var n, j int
 	for {
 		as = s.cells
-		if n = len(as) - 1; n >= 0 {
+		if as != nil {
+			n = len(as) - 1
+			if n < 0 {
+				goto checkCells
+			}
+
 			if a = as[probe&n]; a == nil {
-				if s.cellsBusy == 0 {
-					r := &cell{val: x}
+				if s.cellsBusy == 0 { // Try to attach new Cell
+					r := &cell{val: x} // Optimistically create
 					if s.cellsBusy == 0 && s.casCellsBusy() {
-						if rs, m := s.cells, len(s.cells)-1; m >= 0 {
-							if j := probe & m; rs[j] == nil {
+						if rs, m := s.cells, len(s.cells)-1; rs != nil && m >= 0 { // Recheck under lock
+							if j = probe & m; rs[j] == nil {
 								rs[j] = r
 								s.cellsBusy = 0
 								break
@@ -215,17 +220,22 @@ func (s *Striped64) accumulate(probe int, x int64, fn LongBinaryOperator, wasUnc
 					continue
 				}
 			}
+
 			probe = time.Now().Nanosecond()
-		} else if as == nil {
+			continue
+		}
+
+	checkCells:
+		if as == nil {
 			if s.cellsBusy == 0 && s.cells == nil && s.casCellsBusy() {
 				if s.cells == nil { // Initialize table
 					s.cells = make([]*cell, 2, 4)
-					s.cells[0] = &cell{val: x}
+					s.cells[probe&1] = &cell{val: x}
 					s.cellsBusy = 0
 					break
 				}
 				s.cellsBusy = 0
-			} else {
+			} else { // Fall back on using base
 				if v = s.base; fn == nil {
 					newV = v + x
 				} else {

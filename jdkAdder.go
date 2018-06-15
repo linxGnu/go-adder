@@ -91,6 +91,11 @@ func (u *JDKLongAdder) Add(x int64) {
 	}
 
 	if uncontended {
+		if as == nil {
+			u.accumulate(time.Now().Nanosecond(), x, nil, true)
+			return
+		}
+
 		m := len(as) - 1
 		if m < 0 {
 			u.accumulate(time.Now().Nanosecond(), x, nil, true)
