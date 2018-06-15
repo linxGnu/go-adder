@@ -7,11 +7,9 @@ const (
 	// JDKAdderType recommended long adder from JDK
 	JDKAdderType LongAdderType = iota
 	// RandomCellAdderType long adder with simple strategy of preallocating atomic cell
-	// and select random cell to add.
-	//
+	// and select random cell for update.
 	// RandomCellAdder is faster than JDKAdder in multi routine race benchmark but much
 	// slower in case of single routine (no race).
-	//
 	// RandomCellAdder consume 2KB for storing cells, which is often larger than JDKAdder
 	// which number of cells is dynamic.
 	RandomCellAdderType

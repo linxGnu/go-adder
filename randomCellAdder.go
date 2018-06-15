@@ -10,9 +10,12 @@ const (
 	randomCellSizeMinus = randomCellSize - 1
 )
 
-// RandomCellAdder long adder with simple strategy of preallocating atomic<cell>
-// and select random cell to add. It's faster than JDKAdder but cause more memory in general case.
-// RandomCellAdder consumes 2KB to store cells.
+// RandomCellAdder long adder with simple strategy of preallocating atomic cell
+// and select random cell for update.
+// RandomCellAdder is faster than JDKAdder in multi routine race benchmark but much
+// slower in case of single routine (no race).
+// RandomCellAdder consume 2KB for storing cells, which is often larger than JDKAdder
+// which number of cells is dynamic.
 type RandomCellAdder struct {
 	cells []int64
 }

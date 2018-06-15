@@ -27,17 +27,25 @@ func main() {
 
 ## RandomCellAdder
 
+* A `LongAdder` with simple strategy of preallocating atomic cell and select random cell for update.
+* Faster than JDK LongAdder in multi-routine (race) benchmark but much slower in case of single routine (no race).
+* Consume 2KB to store cells, which is often larger than JDK LongAdder which number of cells is dynamic.
+
 ```
 adder := ga.NewLongAdder(ga.RandomCellAdderType)
 ```
 
 ## AtomicAdder
 
+* A `LongAdder` based on atomic variable. All routines share this variable.
+
 ```
 adder := ga.NewLongAdder(ga.AtomicAdderType)
 ```
 
 ## MutexAdder
+
+* A `LongAdder` based on mutex. All routines share same value and mutex.
 
 ```
 adder := ga.NewLongAdder(ga.MutexAdderType)
