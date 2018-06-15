@@ -35,10 +35,10 @@ BenchmarkRandomCellAdderMultiRoutineMix-8              1        2174805623 ns/op
 import ga "github.com/linxGnu/go-adder"
 
 func main() {
-	adder := ga.NewLongAdder(ga.JDKAdderType)
+    adder := ga.NewLongAdder(ga.JDKAdderType)
 
     for i := 0; i < 100; i++ {
-	   go func() {
+       go func() {
           adder.Add(123)
        }()
     }
