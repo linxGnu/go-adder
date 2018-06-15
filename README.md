@@ -9,15 +9,22 @@ Thread-safe, high performance, contention-aware LongAdder for Go. Beside LongAdd
 
 # Benchmark
 
-* MacbookPro 2017 (MacBookPro14,3)
+* Hardware: MacbookPro 2017 (MacBookPro14,3)
 
 ```
-BenchmarkAtomicAdderSingleRoutine-8             2000000000               0.03 ns/op
+Number of routine: 200
+Number of increment each routine: 1000000
+```
+```
+BenchmarkAtomicAdderSingleRoutine-8             2000000000               0.04 ns/op
 BenchmarkJDKAdderSingleRoutine-8                2000000000               0.05 ns/op
-BenchmarkRandomCellAdderSingleRoutine-8         2000000000               0.13 ns/op
-BenchmarkAtomicAdderMultiRoutine-8                     1        4428545808 ns/op
-BenchmarkJDKAdderMultiRoutine-8                        1        2181652003 ns/op
-BenchmarkRandomCellAdderMultiRoutine-8                 1        1834870874 ns/op
+BenchmarkRandomCellAdderSingleRoutine-8         1000000000               0.27 ns/op
+BenchmarkAtomicAdderMultiRoutine-8                     1        4454227441 ns/op
+BenchmarkJDKAdderMultiRoutine-8                        1        2081959141 ns/op
+BenchmarkRandomCellAdderMultiRoutine-8                 1        1845090920 ns/op
+BenchmarkAtomicAdderMultiRoutineMix-8                  1        4524862037 ns/op
+BenchmarkJDKAdderMultiRoutineMix-8                     1        2907979237 ns/op
+BenchmarkRandomCellAdderMultiRoutineMix-8              1        2174805623 ns/op
 ```
 
 # Usage

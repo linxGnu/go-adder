@@ -133,3 +133,37 @@ func (u *JDKLongAdder) Sum() int64 {
 	}
 	return sum
 }
+
+// Reset variables maintaining the sum to zero. This method may be a useful alternative
+// to creating a new adder, but is only effective if there are no concurrent updates.
+// Because this method is intrinsically racy
+func (u *JDKLongAdder) Reset() {
+	u.base = 0
+	if as := u.cells; as != nil {
+		for _, cell := range as {
+			if cell != nil {
+				cell.val = 0
+			}
+		}
+	}
+}
+
+// SumAndReset equivalent in effect to sum followed by reset.
+// This method may apply for example during quiescent
+// points between multithreaded computations. If there are
+// updates concurrent with this method, the returned value is
+// guaranteed to be the final value occurring before
+// the reset.
+func (u *JDKLongAdder) SumAndReset() (sum int64) {
+	sum = u.base
+	u.base = 0
+	if as := u.cells; as != nil {
+		for _, cell := range as {
+			if cell != nil {
+				sum += cell.val
+				cell.val = 0
+			}
+		}
+	}
+	return
+}

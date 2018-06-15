@@ -25,6 +25,8 @@ type LongAdder interface {
 	Inc()
 	Dec()
 	Sum() int64
+	Reset()
+	SumAndReset() int64
 }
 
 // NewLongAdder create new long adder base on type

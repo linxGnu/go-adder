@@ -50,3 +50,26 @@ func (r *RandomCellAdder) Sum() (sum int64) {
 	}
 	return
 }
+
+// Reset variables maintaining the sum to zero. This method may be a useful alternative
+// to creating a new adder, but is only effective if there are no concurrent updates.
+// Because this method is intrinsically racy
+func (r *RandomCellAdder) Reset() {
+	for i := range r.cells {
+		r.cells[i] = 0
+	}
+}
+
+// SumAndReset equivalent in effect to sum followed by reset.
+// This method may apply for example during quiescent
+// points between multithreaded computations. If there are
+// updates concurrent with this method, the returned value is
+// guaranteed to be the final value occurring before
+// the reset.
+func (r *RandomCellAdder) SumAndReset() (sum int64) {
+	for i := range r.cells {
+		sum += r.cells[i]
+		r.cells[i] = 0
+	}
+	return
+}

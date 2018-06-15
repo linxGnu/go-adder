@@ -15,7 +15,8 @@ func testAdderNotRaceInc(t *testing.T, ty LongAdderType) {
 		adder.Inc()
 	}
 
-	if adder.Sum() != int64(delta) {
+	tmp := int64(delta)
+	if adder.Sum() != tmp || adder.SumAndReset() != tmp || adder.Sum() != 0 {
 		t.Errorf("Adder(%d) logic is wrong", ty)
 	}
 }
@@ -35,7 +36,8 @@ func testAdderRaceInc(t *testing.T, ty LongAdderType) {
 	}
 	wg.Wait()
 
-	if adder.Sum() != int64(delta)*int64(numRoutine) {
+	tmp := int64(delta) * int64(numRoutine)
+	if adder.Sum() != tmp || adder.SumAndReset() != tmp || adder.Sum() != 0 {
 		t.Errorf("Adder(%d) logic is wrong", ty)
 	}
 }
@@ -48,6 +50,11 @@ func testAdderNotRaceDec(t *testing.T, ty LongAdderType) {
 	}
 
 	if adder.Sum() != -int64(delta) {
+		t.Errorf("Adder(%d) logic is wrong", ty)
+	}
+
+	adder.Reset()
+	if adder.Sum() != 0 {
 		t.Errorf("Adder(%d) logic is wrong", ty)
 	}
 }
@@ -68,6 +75,11 @@ func testAdderRaceDec(t *testing.T, ty LongAdderType) {
 	wg.Wait()
 
 	if adder.Sum() != -int64(delta)*int64(numRoutine) {
+		t.Errorf("Adder(%d) logic is wrong", ty)
+	}
+
+	adder.Reset()
+	if adder.Sum() != 0 {
 		t.Errorf("Adder(%d) logic is wrong", ty)
 	}
 }
