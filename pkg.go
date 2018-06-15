@@ -17,6 +17,8 @@ const (
 	RandomCellAdderType
 	// AtomicAdderType simple atomic adder. Fastest at single routine but slowest at multi routine benchmark.
 	AtomicAdderType
+	// MutexAdderType mutex base adder.
+	MutexAdderType
 )
 
 // LongAdder interface
@@ -32,6 +34,8 @@ type LongAdder interface {
 // NewLongAdder create new long adder base on type
 func NewLongAdder(t LongAdderType) LongAdder {
 	switch t {
+	case MutexAdderType:
+		return NewMutexAdder()
 	case AtomicAdderType:
 		return NewAtomicAdder()
 	case RandomCellAdderType:

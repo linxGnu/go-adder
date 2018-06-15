@@ -1,32 +1,35 @@
 package goadder
 
 import (
-	"sync/atomic"
+	"sync"
 )
 
-// AtomicAdder simple atomic adder
-type AtomicAdder struct {
+// MutexAdder mutex base adder
+type MutexAdder struct {
 	value int64
+	lock  sync.Mutex
 }
 
-// NewAtomicAdder create new AtomicAdder
-func NewAtomicAdder() *AtomicAdder {
-	return &AtomicAdder{}
+// NewMutexAdder create new MutexAdder
+func NewMutexAdder() *MutexAdder {
+	return &MutexAdder{}
 }
 
 // Add the given value
-func (a *AtomicAdder) Add(x int64) {
-	atomic.AddInt64(&a.value, x)
+func (m *MutexAdder) Add(x int64) {
+	m.lock.Lock()
+	m.value += x
+	m.lock.Unlock()
 }
 
 // Inc by 1
-func (a *AtomicAdder) Inc() {
-	a.Add(1)
+func (m *MutexAdder) Inc() {
+	m.Add(1)
 }
 
 // Dec by 1
-func (a *AtomicAdder) Dec() {
-	a.Add(-1)
+func (m *MutexAdder) Dec() {
+	m.Add(-1)
 }
 
 // Sum return the current sum. The returned value is NOT an
@@ -34,15 +37,15 @@ func (a *AtomicAdder) Dec() {
 // updates returns an accurate result, but concurrent updates that
 // occur while the sum is being calculated might not be
 // incorporated.
-func (a *AtomicAdder) Sum() int64 {
-	return a.value
+func (m *MutexAdder) Sum() (sum int64) {
+	return m.value
 }
 
 // Reset variables maintaining the sum to zero. This method may be a useful alternative
 // to creating a new adder, but is only effective if there are no concurrent updates.
 // Because this method is intrinsically racy
-func (a *AtomicAdder) Reset() {
-	a.value = 0
+func (m *MutexAdder) Reset() {
+	m.value = 0
 }
 
 // SumAndReset equivalent in effect to sum followed by reset.
@@ -51,8 +54,8 @@ func (a *AtomicAdder) Reset() {
 // updates concurrent with this method, the returned value is
 // guaranteed to be the final value occurring before
 // the reset.
-func (a *AtomicAdder) SumAndReset() (sum int64) {
-	sum = a.value
-	a.value = 0
+func (m *MutexAdder) SumAndReset() (sum int64) {
+	sum = m.value
+	m.value = 0
 	return
 }

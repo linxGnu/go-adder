@@ -10,26 +10,29 @@ var benchDelta = 1000000
 var benchDeltaSingleRoute = 10000000
 
 var atomicAdder1 = NewLongAdder(AtomicAdderType)
+var mutexAdder1 = NewLongAdder(MutexAdderType)
 var jdkAdder1 = NewLongAdder(JDKAdderType)
 var randomCellAdder1 = NewLongAdder(RandomCellAdderType)
 
 var atomicAdder2 = NewLongAdder(AtomicAdderType)
+var mutexAdder2 = NewLongAdder(MutexAdderType)
 var jdkAdder2 = NewLongAdder(JDKAdderType)
 var randomCellAdder2 = NewLongAdder(RandomCellAdderType)
 
 var atomicAdder3 = NewLongAdder(AtomicAdderType)
+var mutexAdder3 = NewLongAdder(MutexAdderType)
 var jdkAdder3 = NewLongAdder(JDKAdderType)
 var randomCellAdder3 = NewLongAdder(RandomCellAdderType)
+
+func BenchmarkMutexAdderSingleRoutine(t *testing.B) {
+	for i := 0; i < benchDeltaSingleRoute; i++ {
+		mutexAdder1.Add(1)
+	}
+}
 
 func BenchmarkAtomicAdderSingleRoutine(t *testing.B) {
 	for i := 0; i < benchDeltaSingleRoute; i++ {
 		atomicAdder1.Add(1)
-	}
-}
-
-func BenchmarkJDKAdderSingleRoutine(t *testing.B) {
-	for i := 0; i < benchDeltaSingleRoute; i++ {
-		jdkAdder1.Add(1)
 	}
 }
 
@@ -39,28 +42,41 @@ func BenchmarkRandomCellAdderSingleRoutine(t *testing.B) {
 	}
 }
 
-func BenchmarkAtomicAdderMultiRoutine(t *testing.B) {
-	benchAdderMultiRoutine(atomicAdder2)
+func BenchmarkJDKAdderSingleRoutine(t *testing.B) {
+	for i := 0; i < benchDeltaSingleRoute; i++ {
+		jdkAdder1.Add(1)
+	}
 }
 
-func BenchmarkJDKAdderMultiRoutine(t *testing.B) {
-	benchAdderMultiRoutine(jdkAdder2)
+func BenchmarkMutexAdderMultiRoutine(t *testing.B) {
+	benchAdderMultiRoutine(mutexAdder2)
+}
+
+func BenchmarkAtomicAdderMultiRoutine(t *testing.B) {
+	benchAdderMultiRoutine(atomicAdder2)
 }
 
 func BenchmarkRandomCellAdderMultiRoutine(t *testing.B) {
 	benchAdderMultiRoutine(randomCellAdder2)
 }
 
+func BenchmarkJDKAdderMultiRoutine(t *testing.B) {
+	benchAdderMultiRoutine(jdkAdder2)
+}
+
+func BenchmarkMutexAdderMultiRoutineMix(t *testing.B) {
+	benchAdderMultiRoutineMix(mutexAdder3)
+}
+
 func BenchmarkAtomicAdderMultiRoutineMix(t *testing.B) {
 	benchAdderMultiRoutineMix(atomicAdder3)
+}
+func BenchmarkRandomCellAdderMultiRoutineMix(t *testing.B) {
+	benchAdderMultiRoutineMix(randomCellAdder3)
 }
 
 func BenchmarkJDKAdderMultiRoutineMix(t *testing.B) {
 	benchAdderMultiRoutineMix(jdkAdder3)
-}
-
-func BenchmarkRandomCellAdderMultiRoutineMix(t *testing.B) {
-	benchAdderMultiRoutineMix(randomCellAdder3)
 }
 
 func benchAdderMultiRoutine(adder LongAdder) {
