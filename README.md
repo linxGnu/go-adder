@@ -78,15 +78,15 @@ goos: darwin
 goarch: amd64
 pkg: github.com/linxGnu/go-adder
 BenchmarkMutexAdderSingleRoutine-8          	2000000000	         0.08 ns/op
-BenchmarkAtomicAdderSingleRoutine-8         	2000000000	         0.03 ns/op
-BenchmarkRandomCellAdderSingleRoutine-8     	2000000000	         0.11 ns/op
-BenchmarkJDKAdderSingleRoutine-8            	1000000000	         0.09 ns/op
-BenchmarkMutexAdderMultiRoutine-8           	       1	19808546646 ns/op
-BenchmarkAtomicAdderMultiRoutine-8          	       1	4458109266 ns/op
-BenchmarkRandomCellAdderMultiRoutine-8      	       1	1809959924 ns/op
-BenchmarkJDKAdderMultiRoutine-8             	       1	2027221743 ns/op
-BenchmarkMutexAdderMultiRoutineMix-8        	       1	19768485419 ns/op
-BenchmarkAtomicAdderMultiRoutineMix-8       	       1	4519988648 ns/op
-BenchmarkRandomCellAdderMultiRoutineMix-8   	       1	2131248316 ns/op
-BenchmarkJDKAdderMultiRoutineMix-8          	       1	3006811661 ns/op
+BenchmarkAtomicAdderSingleRoutine-8         	2000000000	         0.04 ns/op
+BenchmarkRandomCellAdderSingleRoutine-8     	1000000000	         0.24 ns/op
+BenchmarkJDKAdderSingleRoutine-8            	2000000000	         0.05 ns/op
+BenchmarkMutexAdderMultiRoutine-8           	       1	19298628753 ns/op
+BenchmarkAtomicAdderMultiRoutine-8          	       1	4464675924 ns/op
+BenchmarkRandomCellAdderMultiRoutine-8      	       1	1808339753 ns/op
+BenchmarkJDKAdderMultiRoutine-8             	       1	2068405059 ns/op
+BenchmarkMutexAdderMultiRoutineMix-8        	       1	19729368534 ns/op
+BenchmarkAtomicAdderMultiRoutineMix-8       	       1	4513860530 ns/op
+BenchmarkRandomCellAdderMultiRoutineMix-8   	       1	2163899028 ns/op
+BenchmarkJDKAdderMultiRoutineMix-8          	       1	2799739171 ns/op
 ```

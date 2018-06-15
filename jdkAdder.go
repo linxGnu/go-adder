@@ -130,10 +130,10 @@ func (u *JDKLongAdder) Dec() {
 // occur while the sum is being calculated might not be
 // incorporated.
 func (u *JDKLongAdder) Sum() int64 {
-	sum, cells := u.base, u.cells
-	for _, v := range cells {
-		if v != nil {
-			sum += v.val
+	sum, as := u.base, u.cells
+	for _, a := range as {
+		if a != nil {
+			sum += a.val
 		}
 	}
 	return sum
@@ -144,11 +144,10 @@ func (u *JDKLongAdder) Sum() int64 {
 // Because this method is intrinsically racy
 func (u *JDKLongAdder) Reset() {
 	u.base = 0
-	if as := u.cells; as != nil {
-		for _, cell := range as {
-			if cell != nil {
-				cell.val = 0
-			}
+	as := u.cells
+	for _, a := range as {
+		if a != nil {
+			a.val = 0
 		}
 	}
 }
@@ -162,12 +161,11 @@ func (u *JDKLongAdder) Reset() {
 func (u *JDKLongAdder) SumAndReset() (sum int64) {
 	sum = u.base
 	u.base = 0
-	if as := u.cells; as != nil {
-		for _, cell := range as {
-			if cell != nil {
-				sum += cell.val
-				cell.val = 0
-			}
+	as := u.cells
+	for _, a := range as {
+		if a != nil {
+			sum += a.val
+			a.val = 0
 		}
 	}
 	return
