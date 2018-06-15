@@ -12,16 +12,28 @@ Thread-safe, high performance, contention-aware `LongAdder` for Go. Beside JDK L
 ## JDK LongAdder (recommended)
 
 ```go
-import ga "github.com/linxGnu/go-adder"
+package main
+
+import (
+	"fmt"
+	"time"
+
+	ga "github.com/linxGnu/go-adder"
+)
 
 func main() {
-    adder := ga.NewLongAdder(ga.JDKAdderType)
+	adder := ga.NewLongAdder(ga.JDKAdderType)
 
-    for i := 0; i < 100; i++ {
-       go func() {
-          adder.Add(123)
-       }()
-    }
+	for i := 0; i < 100; i++ {
+		go func() {
+			adder.Add(123)
+		}()
+	}
+
+	time.Sleep(3 * time.Second)
+
+    // get total added value
+    fmt.Println(adder.Sum()) 
 }
 ```
 
