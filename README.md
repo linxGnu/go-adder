@@ -14,8 +14,7 @@ import (
 	"fmt"
 	"time"
 
-	ga "git.linecorp.com/LINE-DevOps/go-utils/longadder"
-	// ga "git.linecorp.com/LINE-DevOps/go-utils.git/longadder"
+	ga "github.com/linxGnu/go-adder"
 )
 
 func main() {
