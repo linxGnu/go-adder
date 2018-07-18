@@ -1,6 +1,7 @@
-package goadder
+package longadder
 
 import (
+	"runtime"
 	"sync"
 	"testing"
 )
@@ -24,28 +25,25 @@ var mutexAdder3 = NewLongAdder(MutexAdderType)
 var jdkAdder3 = NewLongAdder(JDKAdderType)
 var randomCellAdder3 = NewLongAdder(RandomCellAdderType)
 
+func init() {
+	// set max procs to thread contention
+	runtime.GOMAXPROCS(200)
+}
+
 func BenchmarkMutexAdderSingleRoutine(t *testing.B) {
-	for i := 0; i < benchDeltaSingleRoute; i++ {
-		mutexAdder1.Add(1)
-	}
+	benchAdderSingleRoutine(mutexAdder1)
 }
 
 func BenchmarkAtomicAdderSingleRoutine(t *testing.B) {
-	for i := 0; i < benchDeltaSingleRoute; i++ {
-		atomicAdder1.Add(1)
-	}
+	benchAdderSingleRoutine(atomicAdder1)
 }
 
 func BenchmarkRandomCellAdderSingleRoutine(t *testing.B) {
-	for i := 0; i < benchDeltaSingleRoute; i++ {
-		randomCellAdder1.Add(1)
-	}
+	benchAdderSingleRoutine(randomCellAdder1)
 }
 
 func BenchmarkJDKAdderSingleRoutine(t *testing.B) {
-	for i := 0; i < benchDeltaSingleRoute; i++ {
-		jdkAdder1.Add(1)
-	}
+	benchAdderSingleRoutine(jdkAdder1)
 }
 
 func BenchmarkMutexAdderMultiRoutine(t *testing.B) {
@@ -79,6 +77,12 @@ func BenchmarkJDKAdderMultiRoutineMix(t *testing.B) {
 	benchAdderMultiRoutineMix(jdkAdder3)
 }
 
+func benchAdderSingleRoutine(adder LongAdder) {
+	for i := 0; i < benchDeltaSingleRoute; i++ {
+		jdkAdder1.Add(1)
+	}
+}
+
 func benchAdderMultiRoutine(adder LongAdder) {
 	var wg sync.WaitGroup
 	for i := 0; i < benchNumRoutine; i++ {
@@ -101,7 +105,7 @@ func benchAdderMultiRoutineMix(adder LongAdder) {
 			var sum int64
 			for j := 0; j < benchDelta; j++ {
 				adder.Add(1)
-				if j%20 == 0 {
+				if j%50 == 0 {
 					sum += adder.Sum()
 				}
 			}

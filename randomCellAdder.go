@@ -1,4 +1,4 @@
-package goadder
+package longadder
 
 import (
 	"sync/atomic"
@@ -6,16 +6,17 @@ import (
 )
 
 const (
-	randomCellSize      = 1 << 8
+	randomCellSize      = 1 << 7 // 128
 	randomCellSizeMinus = randomCellSize - 1
 )
 
-// RandomCellAdder long adder with simple strategy of preallocating atomic cell
-// and select random cell for update.
-// RandomCellAdder is faster than JDKAdder in multi routine race benchmark but much
-// slower in case of single routine (no race).
-// RandomCellAdder consume 2KB for storing cells, which is often larger than JDKAdder
-// which number of cells is dynamic.
+// RandomCellAdder takes idea from JDKAdder by preallocating a fixed number of Cells. Unlike JDKAdder, in each update,
+// RandomCellAdder assign a random-fixed Cell to invoker instead of retry/reassign Cell when contention.
+//
+// RandomCellAdder is often faster than JDKAdder in multi routine race benchmark
+// but slower in case of single routine (no race).
+//
+// RandomCellAdder consume ~1KB for storing cells, which is often larger than JDKAdder which number of cells is dynamic.
 type RandomCellAdder struct {
 	cells []int64
 }
@@ -75,4 +76,13 @@ func (r *RandomCellAdder) SumAndReset() (sum int64) {
 		r.cells[i] = 0
 	}
 	return
+}
+
+// Store value. This function is only effective if there are no concurrent updates.
+func (r *RandomCellAdder) Store(v int64) {
+	as := r.cells
+	as[0] = v
+	for i := 1; i < randomCellSize; i++ {
+		as[i] = 0
+	}
 }

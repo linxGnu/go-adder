@@ -1,10 +1,10 @@
-package goadder
+package longadder
 
 import (
 	"sync/atomic"
 )
 
-// AtomicAdder simple atomic adder
+// AtomicAdder is simple atomic-based adder. Fastest at single routine but slow at multi routine when high-contention happens.
 type AtomicAdder struct {
 	value int64
 }
@@ -30,29 +30,27 @@ func (a *AtomicAdder) Dec() {
 }
 
 // Sum return the current sum. The returned value is NOT an
-// atomic snapshot; invocation in the absence of concurrent
-// updates returns an accurate result, but concurrent updates that
-// occur while the sum is being calculated might not be
-// incorporated.
+// atomic snapshot because of concurrent update.
 func (a *AtomicAdder) Sum() int64 {
 	return a.value
 }
 
 // Reset variables maintaining the sum to zero. This method may be a useful alternative
 // to creating a new adder, but is only effective if there are no concurrent updates.
-// Because this method is intrinsically racy
+// Because this method is intrinsically racy.
 func (a *AtomicAdder) Reset() {
 	a.value = 0
 }
 
-// SumAndReset equivalent in effect to sum followed by reset.
-// This method may apply for example during quiescent
-// points between multithreaded computations. If there are
-// updates concurrent with this method, the returned value is
-// guaranteed to be the final value occurring before
-// the reset.
+// SumAndReset equivalent in effect to sum followed by reset. Like the nature of Sum and Reset,
+// this function is only effective if there are no concurrent updates.
 func (a *AtomicAdder) SumAndReset() (sum int64) {
 	sum = a.value
 	a.value = 0
 	return
+}
+
+// Store value. This function is only effective if there are no concurrent updates.
+func (a *AtomicAdder) Store(v int64) {
+	atomic.StoreInt64(&a.value, v)
 }

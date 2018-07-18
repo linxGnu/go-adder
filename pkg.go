@@ -1,21 +1,22 @@
-package goadder
+/*
+Package longadder contains a collection of thread-safe, concurrent data structures for reading and writing numeric int64-counter,
+inspired by OpenJDK9 LongAdder.
 
-// LongAdderType type of long adder
-type LongAdderType int
+Beside JDKAdder, ported version of OpenJDK9 LongAdder, package also provides other alternatives for various use cases.
+*/
+package longadder
+
+// Type of LongAdder
+type Type int
 
 const (
-	// JDKAdderType recommended long adder from JDK
-	JDKAdderType LongAdderType = iota
-	// RandomCellAdderType long adder with simple strategy of preallocating atomic cell
-	// and select random cell for update.
-	// RandomCellAdder is faster than JDKAdder in multi routine race benchmark but much
-	// slower in case of single routine (no race).
-	// RandomCellAdder consume 2KB for storing cells, which is often larger than JDKAdder
-	// which number of cells is dynamic.
+	// JDKAdderType is type for JDK-based LongAdder
+	JDKAdderType Type = iota
+	// RandomCellAdderType is type for RandomCellAdder
 	RandomCellAdderType
-	// AtomicAdderType simple atomic adder. Fastest at single routine but slowest at multi routine benchmark.
+	// AtomicAdderType is type for AtomicAdder
 	AtomicAdderType
-	// MutexAdderType mutex base adder.
+	// MutexAdderType is type for MutexAdder
 	MutexAdderType
 )
 
@@ -27,10 +28,11 @@ type LongAdder interface {
 	Sum() int64
 	Reset()
 	SumAndReset() int64
+	Store(v int64)
 }
 
-// NewLongAdder create new long adder base on type
-func NewLongAdder(t LongAdderType) LongAdder {
+// NewLongAdder create new LongAdder upon type
+func NewLongAdder(t Type) LongAdder {
 	switch t {
 	case MutexAdderType:
 		return NewMutexAdder()
@@ -39,6 +41,12 @@ func NewLongAdder(t LongAdderType) LongAdder {
 	case RandomCellAdderType:
 		return NewRandomCellAdder()
 	default:
-		return NewJDKLongAdder()
+		return NewJDKAdder()
 	}
+}
+
+// LongBinaryOperator represents an operation upon two int64-valued operands and producing an
+// int64-valued result
+type LongBinaryOperator interface {
+	Apply(left, right int64) int64
 }

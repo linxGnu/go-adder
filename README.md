@@ -1,15 +1,11 @@
-# go-adder
+# longadder
 
-[![Build Status](https://travis-ci.org/linxGnu/go-adder.svg?branch=master)](https://travis-ci.org/linxGnu/go-adder)
-[![Go Report Card](https://goreportcard.com/badge/github.com/linxGnu/go-adder)](https://goreportcard.com/report/github.com/linxGnu/go-adder)
-[![Coverage Status](https://coveralls.io/repos/github/linxGnu/go-adder/badge.svg?branch=master)](https://coveralls.io/github/linxGnu/go-adder?branch=master)
-[![godoc](https://img.shields.io/badge/docs-GoDoc-green.svg)](https://godoc.org/github.com/linxGnu/go-adder)
-
-Thread-safe, high performance, contention-aware `LongAdder` for Go. Beside JDK LongAdder (ported from OpenJDK9), library includes other adders for various use.
+Thread-safe, high performance, contention-aware `LongAdder` for Go, inspired by OpenJDK9 LongAdder.
+Beside JDKAdder (ported from OpenJDK9), library includes other adders for various use.
 
 # Usage
 
-## JDK LongAdder (recommended)
+## JDKAdder (recommended)
 
 ```go
 package main
@@ -18,7 +14,8 @@ import (
 	"fmt"
 	"time"
 
-	ga "github.com/linxGnu/go-adder"
+	ga "git.linecorp.com/LINE-DevOps/go-utils/longadder"
+	// ga "git.linecorp.com/LINE-DevOps/go-utils.git/longadder"
 )
 
 func main() {
@@ -32,16 +29,16 @@ func main() {
 
 	time.Sleep(3 * time.Second)
 
-    // get total added value
-    fmt.Println(adder.Sum()) 
+	// get total added value
+	fmt.Println(adder.Sum()) 
 }
 ```
 
 ## RandomCellAdder
 
 * A `LongAdder` with simple strategy of preallocating atomic cell and select random cell for update.
-* Faster than JDK LongAdder in multi-routine (race) benchmark but much slower in case of single routine (no race).
-* Consume 2KB to store cells, which is often larger than JDK LongAdder which number of cells is dynamic.
+* Faster than JDK LongAdder in multi-routine (race) benchmark but slower in case of single routine (no race).
+* Consume ~1KB to store cells, which is often larger than JDK LongAdder which number of cells is dynamic.
 
 ```
 adder := ga.NewLongAdder(ga.RandomCellAdderType)
@@ -67,6 +64,7 @@ adder := ga.NewLongAdder(ga.MutexAdderType)
 
 * Hardware: MacBookPro14,3 (2.8 GHz Intel Core i7, 16 GB 2133 MHz LPDDR3)
 * OS: Mac OS 10.13.5
+* Source code: [pkg_bench_test.go](https://git.linecorp.com/LINE-DevOps/go-utils/blob/master/longadder/pkg_bench_test.go)
 
 ```
 Number of routine: 200
@@ -76,17 +74,17 @@ Total ops: 200 * 1,000,000 = 200,000,000
 ```
 goos: darwin
 goarch: amd64
-pkg: github.com/linxGnu/go-adder
-BenchmarkMutexAdderSingleRoutine-8          	2000000000	         0.08 ns/op
-BenchmarkAtomicAdderSingleRoutine-8         	2000000000	         0.04 ns/op
-BenchmarkRandomCellAdderSingleRoutine-8     	1000000000	         0.24 ns/op
-BenchmarkJDKAdderSingleRoutine-8            	2000000000	         0.05 ns/op
-BenchmarkMutexAdderMultiRoutine-8           	       1	19298628753 ns/op
-BenchmarkAtomicAdderMultiRoutine-8          	       1	4464675924 ns/op
-BenchmarkRandomCellAdderMultiRoutine-8      	       1	1808339753 ns/op
-BenchmarkJDKAdderMultiRoutine-8             	       1	2068405059 ns/op
-BenchmarkMutexAdderMultiRoutineMix-8        	       1	19729368534 ns/op
-BenchmarkAtomicAdderMultiRoutineMix-8       	       1	4513860530 ns/op
-BenchmarkRandomCellAdderMultiRoutineMix-8   	       1	2163899028 ns/op
-BenchmarkJDKAdderMultiRoutineMix-8          	       1	2799739171 ns/op
+pkg: git.linecorp.com/LINE-DevOps/go-utils/longadder
+BenchmarkMutexAdderSingleRoutine-200                    2000000000               0.05 ns/op
+BenchmarkAtomicAdderSingleRoutine-200                   2000000000               0.05 ns/op
+BenchmarkRandomCellAdderSingleRoutine-200               2000000000               0.05 ns/op
+BenchmarkJDKAdderSingleRoutine-200                      2000000000               0.05 ns/op
+BenchmarkMutexAdderMultiRoutine-200                            1        15624821667 ns/op
+BenchmarkAtomicAdderMultiRoutine-200                           1        4447586221 ns/op
+BenchmarkRandomCellAdderMultiRoutine-200                       1        1780231561 ns/op
+BenchmarkJDKAdderMultiRoutine-200                              1        2092690423 ns/op
+BenchmarkMutexAdderMultiRoutineMix-200                         1        14963214270 ns/op
+BenchmarkAtomicAdderMultiRoutineMix-200                        1        4479809960 ns/op
+BenchmarkRandomCellAdderMultiRoutineMix-200                    1        1951267127 ns/op
+BenchmarkJDKAdderMultiRoutineMix-200                           1        2506134752 ns/op
 ```

@@ -1,4 +1,4 @@
-package goadder
+package longadder
 
 import (
 	"sync"
@@ -8,7 +8,7 @@ import (
 var numRoutine = 9
 var delta = 5237659
 
-func testAdderNotRaceInc(t *testing.T, ty LongAdderType) {
+func testAdderNotRaceInc(t *testing.T, ty Type) {
 	adder := NewLongAdder(ty)
 
 	for i := 0; i < delta; i++ {
@@ -19,9 +19,10 @@ func testAdderNotRaceInc(t *testing.T, ty LongAdderType) {
 	if adder.Sum() != tmp || adder.SumAndReset() != tmp || adder.Sum() != 0 {
 		t.Errorf("Adder(%d) logic is wrong", ty)
 	}
+
 }
 
-func testAdderRaceInc(t *testing.T, ty LongAdderType) {
+func testAdderRaceInc(t *testing.T, ty Type) {
 	adder := NewLongAdder(ty)
 
 	var wg sync.WaitGroup
@@ -40,9 +41,14 @@ func testAdderRaceInc(t *testing.T, ty LongAdderType) {
 	if adder.Sum() != tmp || adder.SumAndReset() != tmp || adder.Sum() != 0 {
 		t.Errorf("Adder(%d) logic is wrong", ty)
 	}
+
+	// try to store
+	if adder.Store(12341); adder.Sum() != 12341 {
+		t.Errorf("Store(%d) logic is wrong", ty)
+	}
 }
 
-func testAdderNotRaceDec(t *testing.T, ty LongAdderType) {
+func testAdderNotRaceDec(t *testing.T, ty Type) {
 	adder := NewLongAdder(ty)
 
 	for i := 0; i < delta; i++ {
@@ -59,7 +65,7 @@ func testAdderNotRaceDec(t *testing.T, ty LongAdderType) {
 	}
 }
 
-func testAdderRaceDec(t *testing.T, ty LongAdderType) {
+func testAdderRaceDec(t *testing.T, ty Type) {
 	adder := NewLongAdder(ty)
 
 	var wg sync.WaitGroup
@@ -84,7 +90,7 @@ func testAdderRaceDec(t *testing.T, ty LongAdderType) {
 	}
 }
 
-func testAdderNotRaceAdd(t *testing.T, ty LongAdderType) {
+func testAdderNotRaceAdd(t *testing.T, ty Type) {
 	adder := NewLongAdder(ty)
 
 	for i := 0; i < delta; i++ {
@@ -97,7 +103,7 @@ func testAdderNotRaceAdd(t *testing.T, ty LongAdderType) {
 	}
 }
 
-func testAdderRaceAdd(t *testing.T, ty LongAdderType) {
+func testAdderRaceAdd(t *testing.T, ty Type) {
 	adder := NewLongAdder(ty)
 
 	var wg sync.WaitGroup

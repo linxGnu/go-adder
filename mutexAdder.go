@@ -1,10 +1,10 @@
-package goadder
+package longadder
 
 import (
 	"sync"
 )
 
-// MutexAdder mutex base adder
+// MutexAdder is mutex-based LongAdder. Slowest compared to other alternatives.
 type MutexAdder struct {
 	value int64
 	lock  sync.Mutex
@@ -33,29 +33,29 @@ func (m *MutexAdder) Dec() {
 }
 
 // Sum return the current sum. The returned value is NOT an
-// atomic snapshot; invocation in the absence of concurrent
-// updates returns an accurate result, but concurrent updates that
-// occur while the sum is being calculated might not be
-// incorporated.
+// atomic snapshot because of concurrent update.
 func (m *MutexAdder) Sum() (sum int64) {
 	return m.value
 }
 
 // Reset variables maintaining the sum to zero. This method may be a useful alternative
 // to creating a new adder, but is only effective if there are no concurrent updates.
-// Because this method is intrinsically racy
+// Because this method is intrinsically racy.
 func (m *MutexAdder) Reset() {
 	m.value = 0
 }
 
-// SumAndReset equivalent in effect to sum followed by reset.
-// This method may apply for example during quiescent
-// points between multithreaded computations. If there are
-// updates concurrent with this method, the returned value is
-// guaranteed to be the final value occurring before
-// the reset.
+// SumAndReset equivalent in effect to sum followed by reset. Like the nature of Sum and Reset,
+// this function is only effective if there are no concurrent updates.
 func (m *MutexAdder) SumAndReset() (sum int64) {
 	sum = m.value
 	m.value = 0
 	return
+}
+
+// Store value. This function is only effective if there are no concurrent updates.
+func (m *MutexAdder) Store(v int64) {
+	m.lock.Lock()
+	m.value = v
+	m.lock.Unlock()
 }
