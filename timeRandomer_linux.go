@@ -1,3 +1,5 @@
+// +build linux
+
 package longadder
 
 import "time"
