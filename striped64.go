@@ -3,7 +3,6 @@ package longadder
 import (
 	"runtime"
 	"sync/atomic"
-	"time"
 )
 
 var maxCells = runtime.NumCPU() << 2
@@ -93,7 +92,7 @@ func (s *Striped64) casCellsBusy() bool {
 
 func (s *Striped64) accumulate(probe int, x int64, fn LongBinaryOperator, wasUncontended bool) {
 	if probe == 0 {
-		probe = time.Now().Nanosecond()
+		probe = getRandomInt()
 		wasUncontended = true
 	}
 
@@ -158,7 +157,9 @@ func (s *Striped64) accumulate(probe int, x int64, fn LongBinaryOperator, wasUnc
 				}
 			}
 
-			probe = time.Now().Nanosecond()
+			probe ^= probe << 13 // xorshift
+			probe ^= probe >> 17
+			probe ^= probe << 5
 			continue
 		}
 

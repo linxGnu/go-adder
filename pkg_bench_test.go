@@ -27,7 +27,7 @@ var randomCellAdder3 = NewLongAdder(RandomCellAdderType)
 
 func init() {
 	// set max procs to thread contention
-	runtime.GOMAXPROCS(200)
+	runtime.GOMAXPROCS(benchNumRoutine + 1)
 }
 
 func BenchmarkMutexAdderSingleRoutine(t *testing.B) {

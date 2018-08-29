@@ -1,9 +1,5 @@
 package longadder
 
-import (
-	"time"
-)
-
 // JDKAdder is ported version of OpenJDK9 LongAdder.
 //
 // When multiple routines update a common sum that is used for purposes such as collecting statistics,
@@ -37,17 +33,17 @@ func (u *JDKAdder) Add(x int64) {
 
 	if uncontended {
 		if as == nil {
-			u.accumulate(time.Now().Nanosecond(), x, nil, true)
+			u.accumulate(getRandomInt(), x, nil, true)
 			return
 		}
 
 		m := len(as) - 1
 		if m < 0 {
-			u.accumulate(time.Now().Nanosecond(), x, nil, true)
+			u.accumulate(getRandomInt(), x, nil, true)
 			return
 		}
 
-		probe := time.Now().Nanosecond() & m
+		probe := getRandomInt() & m
 		if a := as[probe]; a == nil {
 			u.accumulate(probe, x, nil, uncontended)
 		} else {

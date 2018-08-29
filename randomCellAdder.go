@@ -2,7 +2,6 @@ package longadder
 
 import (
 	"sync/atomic"
-	"time"
 )
 
 const (
@@ -30,7 +29,7 @@ func NewRandomCellAdder() *RandomCellAdder {
 
 // Add the given value
 func (r *RandomCellAdder) Add(x int64) {
-	atomic.AddInt64(&r.cells[time.Now().Nanosecond()&randomCellSizeMinus], x)
+	atomic.AddInt64(&r.cells[getRandomInt()&randomCellSizeMinus], x)
 }
 
 // Inc by 1
