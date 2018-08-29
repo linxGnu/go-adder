@@ -6,10 +6,6 @@ Beside JDKAdder, ported version of OpenJDK9 LongAdder, package also provides oth
 */
 package longadder
 
-import (
-	"time"
-)
-
 // Type of LongAdder
 type Type int
 
@@ -53,12 +49,4 @@ func NewLongAdder(t Type) LongAdder {
 // int64-valued result
 type LongBinaryOperator interface {
 	Apply(left, right int64) int64
-}
-
-// var start = time.Now()
-
-// getRandomInt based on nano second resolution
-func getRandomInt() int {
-	// return time.Since(start).Nanoseconds()
-	return time.Now().Nanosecond()
 }
