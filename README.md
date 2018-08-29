@@ -36,7 +36,8 @@ func main() {
 ## RandomCellAdder
 
 * A `LongAdder` with simple strategy of preallocating atomic cell and select random cell for update.
-* Faster than JDK LongAdder in multi-routine (race) benchmark but slower in case of single routine (no race).
+* Slower than JDK LongAdder but faster in summing.
+* 1.5-2x faster than atomic adder.
 * Consume ~1KB to store cells, which is often larger than JDK LongAdder which number of cells is dynamic.
 
 ```
@@ -61,9 +62,11 @@ adder := ga.NewLongAdder(ga.MutexAdderType)
 
 # Benchmark
 
-* Hardware: MacBookPro14,3 (2.8 GHz Intel Core i7, 16 GB 2133 MHz LPDDR3)
-* OS: Mac OS 10.13.5
-* Source code: [pkg_bench_test.go](https://git.linecorp.com/LINE-DevOps/go-utils/blob/master/longadder/pkg_bench_test.go)
+* System:         Dell PowerEdge R640
+* CPU:            2 x Xeon Silver 4114 2.20GHz (40/40cores)
+* Memory:         64GB 2400MHz DDR4
+* OS:             CentOS 7.5, 64-bit
+* Source code: [pkg_bench_test.go](https://github.com/linxGnu/go-adder/blob/master/pkg_bench_test.go)
 
 ```
 Number of routine: 200
@@ -71,19 +74,19 @@ Number of inc operation each routine: 1,000,000
 Total ops: 200 * 1,000,000 = 200,000,000
 ```
 ```
-goos: darwin
+goos: linux
 goarch: amd64
-pkg: git.linecorp.com/LINE-DevOps/go-utils/longadder
-BenchmarkMutexAdderSingleRoutine-200                    2000000000               0.05 ns/op
-BenchmarkAtomicAdderSingleRoutine-200                   2000000000               0.05 ns/op
-BenchmarkRandomCellAdderSingleRoutine-200               2000000000               0.05 ns/op
-BenchmarkJDKAdderSingleRoutine-200                      2000000000               0.05 ns/op
-BenchmarkMutexAdderMultiRoutine-200                            1        15624821667 ns/op
-BenchmarkAtomicAdderMultiRoutine-200                           1        4447586221 ns/op
-BenchmarkRandomCellAdderMultiRoutine-200                       1        1780231561 ns/op
-BenchmarkJDKAdderMultiRoutine-200                              1        2092690423 ns/op
-BenchmarkMutexAdderMultiRoutineMix-200                         1        14963214270 ns/op
-BenchmarkAtomicAdderMultiRoutineMix-200                        1        4479809960 ns/op
-BenchmarkRandomCellAdderMultiRoutineMix-200                    1        1951267127 ns/op
-BenchmarkJDKAdderMultiRoutineMix-200                           1        2506134752 ns/op
+pkg: github.com/linxGnu/go-adder
+BenchmarkMutexAdderSingleRoutine-201                    2000000000               0.07 ns/op
+BenchmarkAtomicAdderSingleRoutine-201                   2000000000               0.07 ns/op
+BenchmarkRandomCellAdderSingleRoutine-201               2000000000               0.07 ns/op
+BenchmarkJDKAdderSingleRoutine-201                      2000000000               0.07 ns/op
+BenchmarkMutexAdderMultiRoutine-201                            1        26052876957 ns/op
+BenchmarkAtomicAdderMultiRoutine-201                           1        5700601451 ns/op
+BenchmarkRandomCellAdderMultiRoutine-201                       1        2754908922 ns/op
+BenchmarkJDKAdderMultiRoutine-201                              1        1528323927 ns/op
+BenchmarkMutexAdderMultiRoutineMix-201                         1        27902798668 ns/op
+BenchmarkAtomicAdderMultiRoutineMix-201                        1        5551253704 ns/op
+BenchmarkRandomCellAdderMultiRoutineMix-201                    1        3859054378 ns/op
+BenchmarkJDKAdderMultiRoutineMix-201                           1        3191008642 ns/op
 ```
