@@ -81,12 +81,12 @@ BenchmarkMutexAdderSingleRoutine-201                    2000000000              
 BenchmarkAtomicAdderSingleRoutine-201                   2000000000               0.07 ns/op
 BenchmarkRandomCellAdderSingleRoutine-201               2000000000               0.07 ns/op
 BenchmarkJDKAdderSingleRoutine-201                      2000000000               0.07 ns/op
-BenchmarkMutexAdderMultiRoutine-201                            1        23716249876 ns/op
-BenchmarkAtomicAdderMultiRoutine-201                           1        5827196899 ns/op
-BenchmarkRandomCellAdderMultiRoutine-201                       1        2780507308 ns/op
-BenchmarkJDKAdderMultiRoutine-201                              1        1382152426 ns/op
-BenchmarkMutexAdderMultiRoutineMix-201                         1        21726001586 ns/op
-BenchmarkAtomicAdderMultiRoutineMix-201                        1        5974700403 ns/op
-BenchmarkRandomCellAdderMultiRoutineMix-201                    1        3940212790 ns/op
-BenchmarkJDKAdderMultiRoutineMix-201                           1        2915671351 ns/op
+BenchmarkMutexAdderMultiRoutine-201                            1        25459275245 ns/op
+BenchmarkAtomicAdderMultiRoutine-201                           1        5978779636 ns/op
+BenchmarkRandomCellAdderMultiRoutine-201                       1        2756905137 ns/op
+BenchmarkJDKAdderMultiRoutine-201                              1        1385726321 ns/op
+BenchmarkMutexAdderMultiRoutineMix-201                         1        21301191632 ns/op
+BenchmarkAtomicAdderMultiRoutineMix-201                        1        5783716658 ns/op
+BenchmarkRandomCellAdderMultiRoutineMix-201                    1        3953217467 ns/op
+BenchmarkJDKAdderMultiRoutineMix-201                           1        2453982842 ns/op
 ```
