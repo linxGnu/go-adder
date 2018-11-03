@@ -18,7 +18,9 @@ func init() {
 }
 
 type cell struct {
+	_   [6]uint64
 	val int64
+	_   [6]uint64
 }
 
 func (c *cell) cas(old, new int64) bool {

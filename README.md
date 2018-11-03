@@ -38,7 +38,7 @@ func main() {
 * A `LongAdder` with simple strategy of preallocating atomic cell and select random cell for update.
 * Slower than JDK LongAdder but faster in summing.
 * 1.5-2x faster than atomic adder.
-* Consume ~1KB to store cells, which is often larger than JDK LongAdder which number of cells is dynamic.
+* Consume ~1KB to store cells.
 
 ```
 adder := ga.NewLongAdder(ga.RandomCellAdderType)
@@ -81,12 +81,12 @@ BenchmarkMutexAdderSingleRoutine-201                    2000000000              
 BenchmarkAtomicAdderSingleRoutine-201                   2000000000               0.07 ns/op
 BenchmarkRandomCellAdderSingleRoutine-201               2000000000               0.07 ns/op
 BenchmarkJDKAdderSingleRoutine-201                      2000000000               0.07 ns/op
-BenchmarkMutexAdderMultiRoutine-201                            1        26052876957 ns/op
-BenchmarkAtomicAdderMultiRoutine-201                           1        5700601451 ns/op
-BenchmarkRandomCellAdderMultiRoutine-201                       1        2754908922 ns/op
-BenchmarkJDKAdderMultiRoutine-201                              1        1528323927 ns/op
-BenchmarkMutexAdderMultiRoutineMix-201                         1        27902798668 ns/op
-BenchmarkAtomicAdderMultiRoutineMix-201                        1        5551253704 ns/op
-BenchmarkRandomCellAdderMultiRoutineMix-201                    1        3859054378 ns/op
-BenchmarkJDKAdderMultiRoutineMix-201                           1        3191008642 ns/op
+BenchmarkMutexAdderMultiRoutine-201                            1        23716249876 ns/op
+BenchmarkAtomicAdderMultiRoutine-201                           1        5827196899 ns/op
+BenchmarkRandomCellAdderMultiRoutine-201                       1        2780507308 ns/op
+BenchmarkJDKAdderMultiRoutine-201                              1        1382152426 ns/op
+BenchmarkMutexAdderMultiRoutineMix-201                         1        21726001586 ns/op
+BenchmarkAtomicAdderMultiRoutineMix-201                        1        5974700403 ns/op
+BenchmarkRandomCellAdderMultiRoutineMix-201                    1        3940212790 ns/op
+BenchmarkJDKAdderMultiRoutineMix-201                           1        2915671351 ns/op
 ```
