@@ -1,4 +1,4 @@
-package longadder
+package goadder
 
 import (
 	"runtime"
@@ -79,7 +79,7 @@ func BenchmarkJDKAdderMultiRoutineMix(t *testing.B) {
 
 func benchAdderSingleRoutine(adder LongAdder) {
 	for i := 0; i < benchDeltaSingleRoute; i++ {
-		jdkAdder1.Add(1)
+		adder.Add(1)
 	}
 }
 

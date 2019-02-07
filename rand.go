@@ -1,4 +1,4 @@
-package longadder
+package goadder
 
 import (
 	"github.com/valyala/fastrand"

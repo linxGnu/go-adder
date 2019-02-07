@@ -1,4 +1,4 @@
-package longadder
+package goadder
 
 import (
 	"sync/atomic"
@@ -48,8 +48,8 @@ func (r *RandomCellAdder) Dec() {
 // occur while the sum is being calculated might not be
 // incorporated.
 func (r *RandomCellAdder) Sum() (sum int64) {
-	for _, v := range r.cells {
-		sum += v
+	for i := range r.cells {
+		sum += atomic.LoadInt64(&r.cells[i])
 	}
 	return
 }
@@ -59,7 +59,7 @@ func (r *RandomCellAdder) Sum() (sum int64) {
 // Because this method is intrinsically racy
 func (r *RandomCellAdder) Reset() {
 	for i := range r.cells {
-		r.cells[i] = 0
+		atomic.StoreInt64(&r.cells[i], 0)
 	}
 }
 
@@ -71,17 +71,16 @@ func (r *RandomCellAdder) Reset() {
 // the reset.
 func (r *RandomCellAdder) SumAndReset() (sum int64) {
 	for i := range r.cells {
-		sum += r.cells[i]
-		r.cells[i] = 0
+		sum += atomic.LoadInt64(&r.cells[i])
+		atomic.StoreInt64(&r.cells[i], 0)
 	}
 	return
 }
 
 // Store value. This function is only effective if there are no concurrent updates.
 func (r *RandomCellAdder) Store(v int64) {
-	as := r.cells
-	as[0] = v
+	atomic.StoreInt64(&r.cells[0], v)
 	for i := 1; i < randomCellSize; i++ {
-		as[i] = 0
+		atomic.StoreInt64(&r.cells[i], 0)
 	}
 }

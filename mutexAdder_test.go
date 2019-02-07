@@ -1,4 +1,4 @@
-package longadder
+package goadder
 
 import (
 	"testing"
