@@ -14,28 +14,40 @@ var jdkF64Adder2 = NewFloat64Adder(JDKF64AdderType)
 var atomicF64Adder3 = NewFloat64Adder(AtomicF64AdderType)
 var jdkF64Adder3 = NewFloat64Adder(JDKF64AdderType)
 
-func BenchmarkAtomicF64AdderSingleRoutine(t *testing.B) {
-	benchF64AdderSingleRoutine(atomicF64Adder1)
+func BenchmarkAtomicF64AdderSingleRoutine(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		benchF64AdderSingleRoutine(atomicF64Adder1)
+	}
 }
 
-func BenchmarkJDKF64AdderSingleRoutine(t *testing.B) {
-	benchF64AdderSingleRoutine(jdkF64Adder1)
+func BenchmarkJDKF64AdderSingleRoutine(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		benchF64AdderSingleRoutine(jdkF64Adder1)
+	}
 }
 
-func BenchmarkAtomicF64AdderMultiRoutine(t *testing.B) {
-	benchF64AdderMultiRoutine(atomicF64Adder2)
+func BenchmarkAtomicF64AdderMultiRoutine(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		benchF64AdderMultiRoutine(atomicF64Adder2)
+	}
 }
 
-func BenchmarkJDKF64AdderMultiRoutine(t *testing.B) {
-	benchF64AdderMultiRoutine(jdkF64Adder2)
+func BenchmarkJDKF64AdderMultiRoutine(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		benchF64AdderMultiRoutine(jdkF64Adder2)
+	}
 }
 
-func BenchmarkAtomicF64AdderMultiRoutineMix(t *testing.B) {
-	benchF64AdderMultiRoutineMix(atomicF64Adder3)
+func BenchmarkAtomicF64AdderMultiRoutineMix(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		benchF64AdderMultiRoutineMix(atomicF64Adder3)
+	}
 }
 
-func BenchmarkJDKF64AdderMultiRoutineMix(t *testing.B) {
-	benchF64AdderMultiRoutineMix(jdkF64Adder3)
+func BenchmarkJDKF64AdderMultiRoutineMix(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		benchF64AdderMultiRoutineMix(jdkF64Adder3)
+	}
 }
 
 func benchF64AdderSingleRoutine(adder Float64Adder) {
