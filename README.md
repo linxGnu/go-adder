@@ -36,7 +36,7 @@ func main() {
 ## RandomCellAdder
 
 * A `LongAdder` with simple strategy of preallocating atomic cell and select random cell for update.
-* Slower than JDK LongAdder but 1.5-2x faster than atomic adder.
+* Slower than JDK LongAdder but 1.5-2x faster than atomic adder on contention.
 * Consume ~1KB to store cells.
 
 ```
@@ -66,24 +66,27 @@ adder := ga.NewLongAdder(ga.MutexAdderType)
 * Memory:         64GB 2400MHz DDR4
 * OS:             CentOS 7.5, 64-bit
 * Source code: [pkg_bench_test.go](https://github.com/linxGnu/go-adder/blob/master/pkg_bench_test.go)
+* Go version: 1.12
 
-```
-BenchmarkAtomicF64AdderSingleRoutine-201                2000000000               0.08 ns/op
-BenchmarkJDKF64AdderSingleRoutine-201                   2000000000               0.08 ns/op
-BenchmarkAtomicF64AdderMultiRoutine-201                        1        1394931835 ns/op
-BenchmarkJDKF64AdderMultiRoutine-201                           1        1383563619 ns/op
-BenchmarkAtomicF64AdderMultiRoutineMix-201                     1        2389037607 ns/op
-BenchmarkJDKF64AdderMultiRoutineMix-201                        1        2187544688 ns/op
-BenchmarkMutexAdderSingleRoutine-201                    2000000000               0.22 ns/op
-BenchmarkAtomicAdderSingleRoutine-201                   2000000000               0.05 ns/op
-BenchmarkRandomCellAdderSingleRoutine-201               2000000000               0.19 ns/op
-BenchmarkJDKAdderSingleRoutine-201                      2000000000               0.07 ns/op
-BenchmarkMutexAdderMultiRoutine-201                            1        27553411399 ns/op
-BenchmarkAtomicAdderMultiRoutine-201                           1        5661739378 ns/op
-BenchmarkRandomCellAdderMultiRoutine-201                       1        2784614208 ns/op
-BenchmarkJDKAdderMultiRoutine-201                              1        1242928566 ns/op
-BenchmarkMutexAdderMultiRoutineMix-201                         1        28100487108 ns/op
-BenchmarkAtomicAdderMultiRoutineMix-201                        1        5627914921 ns/op
-BenchmarkRandomCellAdderMultiRoutineMix-201                    1        3808765307 ns/op
-BenchmarkJDKAdderMultiRoutineMix-201                           1        2165949485 ns/op
+```scala
+goos: linux
+goarch: amd64
+BenchmarkAtomicF64AdderSingleRoutine-40              100          15225234 ns/op               0 B/op          0 allocs/op
+BenchmarkJDKF64AdderSingleRoutine-40                 100          16828269 ns/op               0 B/op          0 allocs/op
+BenchmarkAtomicF64AdderMultiRoutine-40                50          26528758 ns/op            8144 B/op         22 allocs/op
+BenchmarkJDKF64AdderMultiRoutine-40                   50          26272366 ns/op            1892 B/op          6 allocs/op
+BenchmarkAtomicF64AdderMultiRoutineMix-40             30          45385686 ns/op             311 B/op          3 allocs/op
+BenchmarkJDKF64AdderMultiRoutineMix-40                30          45455544 ns/op             766 B/op          5 allocs/op
+BenchmarkMutexAdderSingleRoutine-40                   30          42931025 ns/op               0 B/op          0 allocs/op
+BenchmarkAtomicAdderSingleRoutine-40                 100          10022343 ns/op               0 B/op          0 allocs/op
+BenchmarkRandomCellAdderSingleRoutine-40              50          38920149 ns/op             108 B/op          0 allocs/op
+BenchmarkJDKAdderSingleRoutine-40                    100          14030302 ns/op               0 B/op          0 allocs/op
+BenchmarkMutexAdderMultiRoutine-40                     2         576540605 ns/op            1456 B/op         16 allocs/op
+BenchmarkAtomicAdderMultiRoutine-40                   20          88861041 ns/op             419 B/op          2 allocs/op
+BenchmarkRandomCellAdderMultiRoutine-40               30          45493866 ns/op             239 B/op          3 allocs/op
+BenchmarkJDKAdderMultiRoutine-40                      50          25724032 ns/op             140 B/op          2 allocs/op
+BenchmarkMutexAdderMultiRoutineMix-40                  2         581924480 ns/op            1120 B/op         12 allocs/op
+BenchmarkAtomicAdderMultiRoutineMix-40                20          93733789 ns/op              16 B/op          1 allocs/op
+BenchmarkRandomCellAdderMultiRoutineMix-40            20          62700287 ns/op             331 B/op          4 allocs/op
+BenchmarkJDKAdderMultiRoutineMix-40                   30          45089173 ns/op             230 B/op          3 allocs/op
 ```
