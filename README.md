@@ -71,12 +71,12 @@ adder := ga.NewLongAdder(ga.MutexAdderType)
 ```scala
 goos: linux
 goarch: amd64
-BenchmarkAtomicF64AdderSingleRoutine-40              100          15225234 ns/op               0 B/op          0 allocs/op
-BenchmarkJDKF64AdderSingleRoutine-40                 100          16828269 ns/op               0 B/op          0 allocs/op
-BenchmarkAtomicF64AdderMultiRoutine-40                50          26528758 ns/op            8144 B/op         22 allocs/op
-BenchmarkJDKF64AdderMultiRoutine-40                   50          26272366 ns/op            1892 B/op          6 allocs/op
-BenchmarkAtomicF64AdderMultiRoutineMix-40             30          45385686 ns/op             311 B/op          3 allocs/op
-BenchmarkJDKF64AdderMultiRoutineMix-40                30          45455544 ns/op             766 B/op          5 allocs/op
+BenchmarkAtomicF64AdderSingleRoutine-8               100          11558784 ns/op               0 B/op          0 allocs/op
+BenchmarkJDKF64AdderSingleRoutine-8                  100          12663869 ns/op               0 B/op          0 allocs/op
+BenchmarkAtomicF64AdderMultiRoutine-8                  3         414693263 ns/op            6672 B/op         18 allocs/op
+BenchmarkJDKF64AdderMultiRoutine-8                    30          39951114 ns/op            1178 B/op          4 allocs/op
+BenchmarkAtomicF64AdderMultiRoutineMix-8               3         410603215 ns/op              16 B/op          1 allocs/op
+BenchmarkJDKF64AdderMultiRoutineMix-8                 30          49619434 ns/op              56 B/op          1 allocs/op
 BenchmarkMutexAdderSingleRoutine-40                   30          42931025 ns/op               0 B/op          0 allocs/op
 BenchmarkAtomicAdderSingleRoutine-40                 100          10022343 ns/op               0 B/op          0 allocs/op
 BenchmarkRandomCellAdderSingleRoutine-40              50          38920149 ns/op             108 B/op          0 allocs/op

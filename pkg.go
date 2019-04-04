@@ -62,7 +62,12 @@ func NewLongAdder(t Type) LongAdder {
 
 // NewFloat64Adder create new float64 adder upon type
 func NewFloat64Adder(t Type) Float64Adder {
-	return NewJDKF64Adder()
+	switch t {
+	case AtomicF64AdderType:
+		return NewAtomicF64Adder()
+	default:
+		return NewJDKF64Adder()
+	}
 }
 
 // LongBinaryOperator represents an operation upon two int64-valued operands and producing an
