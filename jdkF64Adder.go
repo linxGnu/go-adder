@@ -14,12 +14,12 @@ package goadder
 //
 // JDKF64Adder is high performance, non-blocking and safe for concurrent use.
 type JDKF64Adder struct {
-	*StripedF64
+	StripedF64
 }
 
 // NewJDKF64Adder create new JDKF64Adder
 func NewJDKF64Adder() *JDKF64Adder {
-	return &JDKF64Adder{&StripedF64{}}
+	return &JDKF64Adder{}
 }
 
 // Add the given value

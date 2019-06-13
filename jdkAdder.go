@@ -18,12 +18,12 @@ import (
 //
 // JDKAdder is high performance, non-blocking and safe for concurrent use.
 type JDKAdder struct {
-	*Striped64
+	Striped64
 }
 
 // NewJDKAdder create new JDKAdder
 func NewJDKAdder() *JDKAdder {
-	return &JDKAdder{&Striped64{}}
+	return &JDKAdder{}
 }
 
 // Add the given value

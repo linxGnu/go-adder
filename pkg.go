@@ -1,9 +1,7 @@
-/*
-package goadder contains a collection of thread-safe, concurrent data structures for reading and writing numeric int64-counter,
-inspired by OpenJDK9 LongAdder.
-
-Beside JDKAdder, ported version of OpenJDK9 LongAdder, package also provides other alternatives for various use cases.
-*/
+// Package goadder contains a collection of thread-safe, concurrent data structures for reading and writing numeric int64-counter,
+// inspired by OpenJDK9 LongAdder.
+//
+// Beside JDKAdder, ported version of OpenJDK9 LongAdder, package also provides other alternatives for various use cases.
 package goadder
 
 // Type of LongAdder
