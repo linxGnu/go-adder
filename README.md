@@ -1,5 +1,10 @@
 # longadder
 
+[![](https://github.com/linxGnu/go-adder/workflows/CI/badge.svg)]()
+[![Go Report Card](https://goreportcard.com/badge/github.com/linxGnu/go-adder)](https://goreportcard.com/report/github.com/linxGnu/go-adder)
+[![Coverage Status](https://coveralls.io/repos/github/linxGnu/go-adder/badge.svg?branch=master)](https://coveralls.io/github/linxGnu/go-adder?branch=master)
+[![godoc](https://img.shields.io/badge/docs-GoDoc-green.svg)](https://godoc.org/github.com/linxGnu/go-adder)
+
 Thread-safe, high performance, contention-aware `LongAdder` and `DoubleAdder` for Go, inspired by OpenJDK9.
 Beside JDK-based `LongAdder` and `DoubleAdder`, library includes other adders for various use.
 

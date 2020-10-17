@@ -23,16 +23,6 @@ func (c *cellf64) cas(old, new float64) bool {
 	return atomic.CompareAndSwapUint64(&c.val, math.Float64bits(old), math.Float64bits(new))
 }
 
-func (c *cellf64) add(v float64) float64 {
-	for {
-		old := c.load()
-		new := old + v
-		if c.cas(old, new) {
-			return new
-		}
-	}
-}
-
 // StripedF64 same as Striped64 but for float64
 type StripedF64 struct {
 	cells     atomic.Value
