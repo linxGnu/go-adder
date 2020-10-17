@@ -35,7 +35,7 @@ func (c *cell) cas(old, new int64) bool {
 // is a power of two. Indexing uses masked per-routine hash codes.
 // Nearly all declarations in this class are package-private,
 // accessed directly by subclasses.
-
+//
 // In part because Cells are relatively large, we avoid creating
 // them until they are needed. When there is no contention, all
 // updates are made to the base field. Upon first contention (a
@@ -44,14 +44,14 @@ func (c *cell) cas(old, new int64) bool {
 // reaching the nearest power of two greater than or equal to the
 // number of CPUS. Table slots remain empty (null) until they are
 // needed.
-
+//
 // A single spinlock ("cellsBusy") is used for initializing and
 // resizing the table, as well as populating slots with new Cells.
 // There is no need for a blocking lock; when the lock is not
 // available, routines try other slots (or the base). During these
 // retries, there is increased contention and reduced locality,
 // which is still better than alternatives.
-
+//
 // The routine probe maintain by SystemTime nanoseconds instead of OpenJDK ThreadLocalRandom.
 // Contention and/or table collisions are indicated by failed CASes when performing an update
 // operation. Upon a collision, if the table size is less than
@@ -59,7 +59,7 @@ func (c *cell) cas(old, new int64) bool {
 // holds the lock. If a hashed slot is empty, and lock is
 // available, a new Cell is created. Otherwise, if the slot
 // exists, a CAS is tried. Retries proceed with reproducing probe.
-
+//
 // The table size is capped because, when there are more routines
 // than CPUs, supposing that each routine were bound to a CPU,
 // there would exist a perfect hash function mapping routines to
@@ -70,7 +70,7 @@ func (c *cell) cas(old, new int64) bool {
 // and because routines are typically not bound to CPUS forever,
 // may not occur at all. However, despite these limitations,
 // observed contention rates are typically low in these cases.
-
+//
 // It is possible for a Cell to become unused when routines that
 // once hashed to it terminate, as well as in the case where
 // doubling the table causes no routine to hash to it under
